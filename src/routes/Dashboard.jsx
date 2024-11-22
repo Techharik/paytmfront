@@ -7,6 +7,10 @@ const Dashboard = () => {
     const [contacts, setContacts] = useState([])
     const [searchs, setSearch] = useState('')
     const [popUp, setPopup] = useState(null)
+    const [amtinp, setAmt] = useState(0)
+
+
+
 
     const sendMoney = async (id) => {
         setPopup(id)
@@ -17,7 +21,7 @@ const Dashboard = () => {
 
             const response = await axios.post('http://localhost:3000/api/v1/transferbalance', {
                 recerverId: popUp,
-                amount: 100
+                amount: Number(amtinp)
             }, {
                 headers: {
                     Authorization: "Bearer " + token
@@ -25,31 +29,33 @@ const Dashboard = () => {
 
 
             })
+
+            setPopup(null)
+            balance()
+            setAmt(0)
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    async function balance() {
+
+        try {
+
+            const response = await axios.get('http://localhost:3000/api/v1/checkbalance', {
+                headers: {
+                    Authorization: "Bearer " + token
+                }
+            })
             if (response.data.success == true) {
-                // setAvailableAmt(response.data.amount)
+                setAvailableAmt(response.data.amount)
             }
         } catch (e) {
             console.log(e)
         }
     }
-
     useEffect(() => {
-        async function balance() {
 
-            try {
-
-                const response = await axios.get('http://localhost:3000/api/v1/checkbalance', {
-                    headers: {
-                        Authorization: "Bearer " + token
-                    }
-                })
-                if (response.data.success == true) {
-                    setAvailableAmt(response.data.amount)
-                }
-            } catch (e) {
-                console.log(e)
-            }
-        }
         balance()
     }, [])
 
@@ -113,9 +119,9 @@ const Dashboard = () => {
                     <div className='w-[300px] py-20 rounded-lg bg-white flex justify-center flex-col items-center'>
                         <p className='text-lg text-center py-5 font-semibold'>Enter the Amount</p>
                         <input type="text" placeholder='100' className='border border-black p-2 rounded-lg mt-1 w-[80%]'
-                        // value={formDetails.firstname}
-                        // name='firstname'
-                        // onChange={(e) => handlechange(e)}
+                            value={amtinp}
+                            // name='firstname'
+                            onChange={(e) => setAmt(e.target.value)}
                         />
                         <div className='flex justify-between px-10 w-full gap-5'>
 

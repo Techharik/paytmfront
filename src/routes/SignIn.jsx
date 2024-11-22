@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import { Link, useNavigate, } from 'react-router-dom'
 import axios from 'axios'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 
-const SignUp = () => {
+
+const SignIn = () => {
     const [formDetails, setformDetails] = useState({
         username: '',
         password: '',
@@ -22,7 +23,7 @@ const SignUp = () => {
     const handleSubmit = async () => {
         try {
 
-            const response = await axios.post('http://localhost:3000/api/v1/registeruser', formDetails)
+            const response = await axios.post('http://localhost:3000/api/v1/loginuser', formDetails)
             console.log(response)
             if (response.data.success == true) {
                 localStorage.setItem('tokenIn', response.data.data);
@@ -33,32 +34,15 @@ const SignUp = () => {
         }
     }
 
-
     return (
         <div className='h-screen w-full flex justify-center items-center'>
             <div className='bg-white p-4 rounded-lg'>
                 <div className='flex flex-col items-center'>
-                    <h1 className='font-semibold text-lg'>Sign Up</h1>
+                    <h1 className='font-semibold text-lg'>Sign In</h1>
                     <p className='text-slate-400 text-center w-72 pb-8'>Enter your authentication to  create your account</p>
                 </div>
 
                 <div className='w-[400px] px-10'>
-                    <div className='flex flex-col py-2'>
-                        <label htmlFor="firstname">First Name</label>
-                        <input type="text" placeholder='John' className='border p-2 rounded-lg mt-1'
-                            value={formDetails.firstname}
-                            name='firstname'
-                            onChange={(e) => handlechange(e)}
-                        />
-                    </div>
-                    <div className='flex flex-col py-2'>
-                        <label htmlFor="lastname">Last Name</label>
-                        <input type="text" placeholder='Doe' className='border p-2 rounded-lg mt-1'
-                            value={formDetails.lastname}
-                            name='lastname'
-                            onChange={(e) => handlechange(e)}
-                        />
-                    </div>
                     <div className='flex flex-col py-2'>
                         <label htmlFor="email">Email</label>
                         <input type="email" placeholder='hari@gmail.com' className='border p-2 rounded-lg mt-1'
@@ -79,12 +63,12 @@ const SignUp = () => {
                     <button className='w-full bg-black  text-white font-semibold py-2 mt-6 rounded-lg hover:bg-opacity-80'
                         onClick={handleSubmit}
                     >
-                        Sign up
+                        Sign In
                     </button>
                     <p className='text-center py-4'>
-                        Already have an account?
+                        Register a New Account ?
                         <span className='underline'>
-                            <Link to='/' > Sign In
+                            <Link to='/signup' > Sign Up
                             </Link>
                         </span>
                     </p>
@@ -94,4 +78,4 @@ const SignUp = () => {
     )
 }
 
-export default SignUp
+export default SignIn
